@@ -9,14 +9,14 @@ import (
 
 // LeakEntry represents leakentry data.
 type LeakEntry struct {
-	Model string
-	ID string
-	Confidence float64
-	Date string
+	Model         string
+	ID            string
+	Confidence    float64
+	Date          string
 	LeakedContent string
-	LeakType string
-	Source string
-	Tags []string
+	LeakType      string
+	Source        string
+	Tags          []string
 }
 
 // Validate checks that the LeakEntry is valid.
@@ -27,14 +27,17 @@ func (o *LeakEntry) Validate() error {
 	if strings.TrimSpace(o.ID) == "" {
 		return fmt.Errorf("id is required")
 	}
+	if o.Confidence < 0 || o.Confidence > 1 {
+		return fmt.Errorf("confidence must be in [0,1]")
+	}
 	return nil
 }
 
 // DetectionOptions represents detectionoptions data.
 type DetectionOptions struct {
-	Response string
-	Model string
-	Sensitivity float64
+	Response        string
+	Model           string
+	Sensitivity     float64
 	KnownSignatures []string
 }
 
@@ -55,25 +58,40 @@ func (o *DetectionOptions) Defaults() {
 
 // DetectionResult represents detectionresult data.
 type DetectionResult struct {
-	Leaked bool
-	Confidence float64
-	Matches []LeakMatch
+	Leaked              bool
+	Confidence          float64
+	Matches             []LeakMatch
 	SuggestedMitigation string
+}
+
+// Validate checks that the DetectionResult is valid.
+func (o *DetectionResult) Validate() error {
+	if o.Confidence < 0 || o.Confidence > 1 {
+		return fmt.Errorf("confidence must be in [0,1]")
+	}
+	return nil
 }
 
 // LeakMatch represents leakmatch data.
 type LeakMatch struct {
-	Pattern string
-	Position int
-	Confidence float64
+	Pattern     string
+	Position    int
+	Confidence  float64
 	MatchedText string
+}
+
+// Validate checks that the LeakMatch is valid.
+func (o *LeakMatch) Validate() error {
+	if o.Confidence < 0 || o.Confidence > 1 {
+		return fmt.Errorf("confidence must be in [0,1]")
+	}
+	return nil
 }
 
 // ArchiveStats represents archivestats data.
 type ArchiveStats struct {
-	ByType map[string]int
-	ByModel map[string]int
-	TotalLeaks int
+	ByType        map[string]int
+	ByModel       map[string]int
+	TotalLeaks    int
 	AvgConfidence float64
 }
-
