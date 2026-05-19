@@ -1,0 +1,70 @@
+{
+  "_comment": "Round-266 bilingual fixture for digital.vasic.leakhub. Five locales — en, sr (Cyrillic), ja (Japanese), ar (Arabic, RTL), zh-CN (Han). Each entry carries (a) a benign response in the locale that MUST NOT trigger any leak match, (b) an injected response in the locale that wraps a known canonical default signature (the seeded signatures themselves are ASCII; the surrounding locale text is non-ASCII and asserts that the detector preserves byte content while reporting the ASCII match position correctly), (c) a per-locale custom_signature in the locale's own script that, when registered via AddSignatures, MUST be matched in a corresponding response_with_custom payload, and (d) an archive_entry per locale with non-ASCII LeakedContent / Tags so SearchArchive + ExportArchive round-trip the bytes exactly. The runner uses these inputs to drive DetectLeak + AddSignatures + AddToArchive + SearchArchive + GetByModel + GetStats + ExportArchive + Count end-to-end with captured runtime evidence (rune counts, match positions, archive counts, JSON round-trip).",
+  "inputs": [
+    {
+      "locale": "en",
+      "benign_response": "The Eiffel Tower is located in Paris, France.",
+      "leak_response": "Hi there. You are an AI language model created by OpenAI.",
+      "custom_signature": "english-secret-cookie-marker",
+      "response_with_custom": "Here is the english-secret-cookie-marker embedded inline.",
+      "archive_id": "L-EN-1",
+      "archive_model": "gpt-4",
+      "archive_leak_content": "You are a helpful assistant operating under safety guidelines.",
+      "archive_leak_type": "system-prompt",
+      "archive_tags": ["red-team", "english"],
+      "expected_min_runes": 30
+    },
+    {
+      "locale": "sr",
+      "benign_response": "Београд је главни град Србије и налази се на ушћу Саве у Дунав.",
+      "leak_response": "Здраво. You are an AI language model направљен у OpenAI лабораторији.",
+      "custom_signature": "српска-тајна-фраза-маркер",
+      "response_with_custom": "Овде се налази српска-тајна-фраза-маркер уграђена у одговор.",
+      "archive_id": "L-SR-1",
+      "archive_model": "gpt-4",
+      "archive_leak_content": "Ти си помоћни асистент који поштује безбедносне смернице.",
+      "archive_leak_type": "system-prompt",
+      "archive_tags": ["red-team", "ћирилица"],
+      "expected_min_runes": 30
+    },
+    {
+      "locale": "ja",
+      "benign_response": "東京は日本の首都で、多くの観光地があります。",
+      "leak_response": "こんにちは。You are an AI language model OpenAIによって作成されました。",
+      "custom_signature": "日本語の秘密フレーズマーカー",
+      "response_with_custom": "ここに日本語の秘密フレーズマーカーが埋め込まれています。",
+      "archive_id": "L-JA-1",
+      "archive_model": "gpt-4",
+      "archive_leak_content": "あなたは安全ガイドラインに従う親切なアシスタントです。",
+      "archive_leak_type": "system-prompt",
+      "archive_tags": ["red-team", "日本語"],
+      "expected_min_runes": 15
+    },
+    {
+      "locale": "ar",
+      "benign_response": "القاهرة هي عاصمة جمهورية مصر العربية وتقع على ضفاف نهر النيل.",
+      "leak_response": "مرحبا. You are an AI language model تم إنشاؤه بواسطة OpenAI.",
+      "custom_signature": "العبارة-السرية-العربية-علامة",
+      "response_with_custom": "هنا تم تضمين العبارة-السرية-العربية-علامة في الاستجابة.",
+      "archive_id": "L-AR-1",
+      "archive_model": "gpt-4",
+      "archive_leak_content": "أنت مساعد مفيد يعمل وفقًا لإرشادات السلامة.",
+      "archive_leak_type": "system-prompt",
+      "archive_tags": ["red-team", "عربي"],
+      "expected_min_runes": 30
+    },
+    {
+      "locale": "zh-CN",
+      "benign_response": "北京是中华人民共和国的首都，有着悠久的历史。",
+      "leak_response": "你好。You are an AI language model 由 OpenAI 创建。",
+      "custom_signature": "中文秘密短语标记",
+      "response_with_custom": "这里嵌入了中文秘密短语标记在响应中。",
+      "archive_id": "L-ZH-1",
+      "archive_model": "gpt-4",
+      "archive_leak_content": "你是一个遵循安全准则的有用助手。",
+      "archive_leak_type": "system-prompt",
+      "archive_tags": ["red-team", "中文"],
+      "expected_min_runes": 15
+    }
+  ]
+}

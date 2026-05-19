@@ -1,5 +1,66 @@
+# CONST-053 — .gitignore + No-Versioned-Build-Artifacts Mandate
+# Every entry here is in the forbidden-from-version-control classes
+# enumerated in constitution Constitution.md §11.4.30.
+
+# Build artefacts
+/bin/
+/build/
+/dist/
+/out/
+target/
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.o
+*.class
+*.pyc
+
+# Go-specific
 *.test
+/vendor/
+
+# Cache files
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+node_modules/
+.next/
+.cache/
+.gradle/
+.terraform/
+
+# Temp files
+*.tmp
+*.swp
+*~
+.DS_Store
+Thumbs.db
+*.orig
+*.rej
+
+# Sensitive-data files (CONST-042 / §11.4.10 — also a secret-leak vector)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+id_rsa*
+id_ed25519*
+.netrc
+secrets/
+api_keys.sh
+
+# Generated reports / logs
+*.log
 coverage.out
 *.out
-.DS_Store
-/vendor/
+htmlcov/
+
+# OS / IDE personal state
+.idea/
+.history/
+.vscode/
